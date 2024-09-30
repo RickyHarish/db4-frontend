@@ -11,7 +11,7 @@ const Header=()=>{
       <Navbar style={{backgroundColor:"cadetblue"}} expand="lg" variant='dark' collapseOnSelect>
       <Container>
         <LinkContainer to='/' >
-          <Navbar.Brand style={{ marginRight: '10px', fontSize: '1.5rem' }}>DB4 Cloud HRMS </Navbar.Brand>
+          <Navbar.Brand className='title' style={{ marginRight: '10px', fontSize: '1.5rem'}}>DB4Cloud Technologies</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">         

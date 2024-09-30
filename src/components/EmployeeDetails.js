@@ -1,13 +1,17 @@
 import React from 'react'
-import { Card } from 'react-bootstrap'
+import { Card, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const EmployeeDetails = ({employee}) => {
   return (
-    <Card className='my-3 p-3' >
+    <Card className='my-1 p-1' >
+        <Row>
+            <Col md={4}>
         <Link to={`/employee`}>
             <Card.Img src={employee.img} className='emp-img' />
         </Link>
+        </Col>
+        <Col md={8}>
         <Card.Body>
             <Card.Title>
                 <strong>{employee.name}</strong>
@@ -31,6 +35,8 @@ const EmployeeDetails = ({employee}) => {
                 {employee.Emp_ID}
             </Card.Text>
         </Card.Body>
+        </Col>
+        </Row>
     </Card>
   )
 }

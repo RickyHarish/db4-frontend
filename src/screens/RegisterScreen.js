@@ -1,104 +1,118 @@
+// import React, { useState } from "react";
+// //import { Form, Button, Container } from "react-bootstrap";
+// import EducationTrainingDetailsForm from "../forms/EducationDetailsForm";
+// import JoiningDetailsForm from "../forms/JoiningDetailsForm";
+
+// const RegisterScreen = () => {
+
+//     // State to manage which form is currently being shown
+//     const [currentForm, setCurrentForm] = useState(1);
+
+//     // State to hold the joining details data
+//   const [joiningDetails, setJoiningDetails] = useState({
+//     dateOfJoining: '',
+//     officeName: '',
+//     initialDesignation: '',
+//     modeOfRecruitment: '',
+//     dateOfAppointment:'',
+//     employeeType:''
+//   });
+
+//   // State to hold the education and training details data
+//   const [educationDetails, setEducationDetails] = useState({});
+//   const [trainingDetails, setTrainingDetails] = useState({});
+
+//   // Function to validate joining form fields before navigating to the next form
+//   const validateJoiningDetails = () => {
+//     const { dateOfJoining, dateOfAppointment, officeName, initialDesignation, modeOfRecruitment, employeeType } = joiningDetails;
+//     return dateOfJoining && dateOfAppointment && officeName && initialDesignation && modeOfRecruitment && employeeType;
+//   };
+
+//   // Function to go to the next form (Education/Training Details)
+//   const goToNextForm = () => {
+//     if (validateJoiningDetails()) {
+//       setCurrentForm(2);  // Go to the next form (Education & Training)
+//     } else {
+//       alert('Please fill out all Joining Details before proceeding.');
+//     }
+//   };
+
+//   // Function to go back to the previous form (Joining Details)
+//   const goToPreviousForm = () => {
+//     setCurrentForm(1);  // Go back to the Joining Details form
+//   };
+
+
+//   return(
+//     <div className="register-screen">
+//        {currentForm===1 && (<JoiningDetailsForm
+//         joiningDetails={joiningDetails}
+//         setJoiningDetails={setJoiningDetails}
+//         goToNextForm={goToNextForm}
+//         /> )}
+
+//         {currentForm===2 && <EducationTrainingDetailsForm
+//         educationDetails={educationDetails}
+//         setEducationDetails={setEducationDetails}
+//         trainingDetails={trainingDetails}
+//         setTrainingDetails={setTrainingDetails}
+//         goToPreviousForm={goToPreviousForm}
+//          />}
+        
+//     </div>
+//   )
+// };
+
+// export default RegisterScreen;
+
+
 import React, { useState } from "react";
-import { Form, Button, Container } from "react-bootstrap";
+import EducationTrainingDetailsForm from "../forms/EducationDetailsForm";
+import JoiningDetailsForm from "../forms/JoiningDetailsForm";
 
 const RegisterScreen = () => {
-  const [employeeDetails, setEmployeeDetails] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    dob: "",
-    address: "",
+  const [currentForm, setCurrentForm] = useState(1);
+
+  const [joiningDetails, setJoiningDetails] = useState({
+    dateOfJoining: '',
+    officeName: '',
+    initialDesignation: '',
+    modeOfRecruitment: '',
+    dateOfAppointment: '',
+    employeeType: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEmployeeDetails({
-      ...employeeDetails,
-      [name]: value,
-    });
+  const [educationDetails, setEducationDetails] = useState({});
+  const [trainingDetails, setTrainingDetails] = useState({});
+
+  const goToNextForm = () => {
+    setCurrentForm(2);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Employee Details Submitted:", employeeDetails);
-    // Handle form submission here (e.g., send to backend, etc.)
+  const goToPreviousForm = () => {
+    setCurrentForm(1);
   };
 
   return (
-    <Container>
-      <h2 className="my-4">Employee Personal Details</h2>
-      <Form onSubmit={handleSubmit}>
-        {/* Name */}
-        <Form.Group controlId="formName" className="mb-3">
-          <Form.Label>Full Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            placeholder="Enter full name"
-            value={employeeDetails.name}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+    <div className="register-screen">
+      {currentForm === 1 && (
+        <JoiningDetailsForm
+          joiningDetails={joiningDetails}
+          setJoiningDetails={setJoiningDetails}
+          goToNextForm={goToNextForm}
+        />
+      )}
 
-        {/* Email */}
-        <Form.Group controlId="formEmail" className="mb-3">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            placeholder="Enter email"
-            value={employeeDetails.email}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        {/* Phone */}
-        <Form.Group controlId="formPhone" className="mb-3">
-          <Form.Label>Phone Number</Form.Label>
-          <Form.Control
-            type="tel"
-            name="phone"
-            placeholder="Enter phone number"
-            value={employeeDetails.phone}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        {/* DOB */}
-        <Form.Group controlId="formDOB" className="mb-3">
-          <Form.Label>Date of Birth</Form.Label>
-          <Form.Control
-            type="date"
-            name="dob"
-            value={employeeDetails.dob}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        {/* Address */}
-        <Form.Group controlId="formAddress" className="mb-3">
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            as="textarea"
-            name="address"
-            placeholder="Enter address"
-            rows={3}
-            value={employeeDetails.address}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        {/* Submit Button */}
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-    </Container>
+      {currentForm === 2 && (
+        <EducationTrainingDetailsForm
+          educationDetails={educationDetails}
+          setEducationDetails={setEducationDetails}
+          trainingDetails={trainingDetails}
+          setTrainingDetails={setTrainingDetails}
+          goToPreviousForm={goToPreviousForm}
+        />
+      )}
+    </div>
   );
 };
 
