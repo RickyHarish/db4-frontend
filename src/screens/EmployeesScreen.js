@@ -1,54 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EmployeeDetails from '../components/EmployeeDetails';
 import { Modal, Button, Form } from 'react-bootstrap'; // Importing from React-Bootstrap
+import axios from 'axios'
 
 const EmployeesScreen = () => {
-  const [employeesData, setEmployeesData] = useState([
-    {
-      name: 'Harish',
-      email: 'harishad@gmail.com',
-      dob: '1998-04-28',
-      img: 'https://res.cloudinary.com/djestqza3/image/upload/v1727163192/Passport_Size_Photo_bxxoyj.jpg',
-      phone: '9876543210',
-      location: 'Chennai',
-      role: 'ASSOCIATE SOFTWARE ENGINEER',
-      department: 'Development',
-      Emp_ID: '123456',
-    },
-    {
-      name: 'Manjunath',
-      email: 'manjunathg@gmail.com',
-      img: 'https://media.gettyimages.com/id/985138674/photo/portrait-of-smiling-mid-adult-man-wearing-t-shirt.jpg?s=612x612&w=gi&k=20&c=DhdnAqqXmNwPVWnLLtj7-ntysrj1oLMBdf21YyKJZk0=',
-      dob: '2001-01-01',
-      phone: '9876598765',
-      location: 'Chennai',
-      role: 'ASSOCIATE SOFTWARE ENGINEER',
-      department: 'Development',
-      Emp_ID: '123123',
-    },
-    {
-      name: 'Dinesh',
-      email: 'dinesha@gmail.com',
-      img: 'https://res.cloudinary.com/djestqza3/image/upload/v1727163593/WhatsApp_Image_2024-09-24_at_1.05.37_PM_zhzlyx.jpg',
-      dob: '1998-02-02',
-      phone: '9876541234',
-      location: 'Chennai',
-      role: 'ASSOCIATE SOFTWARE ENGINEER',
-      department: 'Development',
-      Emp_ID: '123432',
-    },
-    {
-      name: 'Subikshan',
-      email: 'subikshanb@gmail.com',
-      img: 'https://res.cloudinary.com/djestqza3/image/upload/v1727163581/passport_size_photo_copy_owmbto.jpg',
-      dob: '2000-03-03',
-      phone: '8787989801',
-      location: 'Chennai',
-      role: 'ASSOCIATE SOFTWARE ENGINEER',
-      department: 'Development',
-      Emp_ID: '567890',
-    },
-  ]);
+  const [employeesData, setEmployeesData] = useState([]);
 
   const [newEmployee, setNewEmployee] = useState({
     name: '',
@@ -64,22 +20,30 @@ const EmployeesScreen = () => {
 
   const [showModal, setShowModal] = useState(false); // For showing and hiding the modal
   const [imagePreview, setImagePreview] = useState(null);
+  const [file, setFile] = useState(null); // File state to store image file
 
-  // Handle image upload and convert it to base64
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const response = await axios.get('/api/employees')
+      const {data} = await response
+      console.log(data)
+      setEmployeesData(data)
+    }
+    fetchData()
+  }, [])
+
+  // Handle image upload and store file in state
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile); // Store the file
+
+    // Display image preview
     const reader = new FileReader();
-
     reader.onloadend = () => {
-      setNewEmployee((prevData) => ({
-        ...prevData,
-        img: reader.result, // Save the base64-encoded image
-      }));
-      setImagePreview(reader.result); // Set image preview
+      setImagePreview(reader.result);
     };
-
-    if (file) {
-      reader.readAsDataURL(file);
+    if (selectedFile) {
+      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -91,21 +55,49 @@ const EmployeesScreen = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    setEmployeesData((prevData) => [...prevData, { ...newEmployee, Emp_ID: Date.now().toString() }]);
-    setShowModal(false); // Hide the modal after adding the employee
-    setNewEmployee({
-      name: '',
-      email: '',
-      dob: '',
-      img: '',
-      phone: '',
-      location: '',
-      role: '',
-      department: '',
-      Emp_ID: '',
-    });
+
+    // Use FormData to send both form fields and the file
+    const formData = new FormData();
+    formData.append('name', newEmployee.name);
+    formData.append('email', newEmployee.email);
+    formData.append('dob', newEmployee.dob);
+    formData.append('phone', newEmployee.phone);
+    formData.append('location', newEmployee.location);
+    formData.append('role', newEmployee.role);
+    formData.append('department', newEmployee.department);
+    formData.append('Emp_ID', Date.now().toString()); // Generating Emp_ID
+
+    if (file) {
+      formData.append('img', file); // Append the file to FormData
+    }
+
+    try {
+      const {data} = await axios.post('/api/employees', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }, // Set headers for multipart data
+      });
+      console.log(data);
+
+      setEmployeesData((prevData) => [...prevData, data]); // Add the new employee to the state
+
+      setShowModal(false); // Hide the modal after adding the employee
+      setNewEmployee({
+        name: '',
+        email: '',
+        dob: '',
+        img: '',
+        phone: '',
+        location: '',
+        role: '',
+        department: '',
+        Emp_ID: '',
+      });
+      setFile(null); // Reset the file input
+      setImagePreview(null); // Clear the image preview
+    } catch (error) {
+      console.error('Error uploading employee data:', error);
+    }
   };
 
   return (
@@ -161,7 +153,7 @@ const EmployeesScreen = () => {
               />
             </Form.Group>
             <Form.Group controlId="formImg" className='formName'>
-              <Form.Label className='modelLabel'>Image URL</Form.Label>
+              <Form.Label className='modelLabel'>Image</Form.Label>
               <Form.Control
                 type="file"
                 name="img"

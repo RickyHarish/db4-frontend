@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Footer from '../components/Footer';
 
-const EducationTrainingDetailsForm = ({ goToPreviousForm }) => {
+const EducationTrainingDetailsForm = ({ nextStep, prevStep, handleFormDataChange }) => {
   // State to manage education details
   const [educationDetails, setEducationDetails] = useState({
     basic: [
@@ -140,26 +140,24 @@ const EducationTrainingDetailsForm = ({ goToPreviousForm }) => {
     const educationErrors = validateEducation();
     const trainingErrors = validateTraining();
     const allErrors = { ...educationErrors, ...trainingErrors };
+    const trainingDetails = {trainingInIndia, trainingAbroad}
 
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors); // Set validation errors
       alert('Please fix the errors before submitting');
       return;
     }
-
+    console.log("Education Details:", educationDetails)
+    handleFormDataChange("educationDetails", educationDetails)
+    console.log("trainingInIndia", trainingInIndia)
+    handleFormDataChange("trainingInIndia", trainingInIndia)
+    console.log("trainingInAbroad", trainingAbroad)
+    handleFormDataChange("trainingInAbroad", trainingAbroad)
+    console.log(trainingDetails)
+    handleFormDataChange("trainingDetails", trainingDetails)
+    nextStep()
     // Clear any previous errors
     setErrors({});
-
-    try {
-      await axios.post('https://your-backend-api-url/education-training-details', {
-        educationDetails,
-        trainingInIndia,
-        trainingAbroad,
-      });
-      alert('Education and training details submitted successfully!');
-    } catch (error) {
-      console.error('Error submitting education/training details:', error);
-    }
   };
 
   return (
@@ -252,7 +250,7 @@ const EducationTrainingDetailsForm = ({ goToPreviousForm }) => {
                   </td>
                   <td>
                     <input type="text" name="marks" value={edu.marks} onChange={(e) => handleEducationChange('technical', index, e)} />
-                    {errors[`technical_marks_${index}`] && <span className="error">{errors[`technical_education_${index}`]}</span>}
+                    {errors[`technical_marks_${index}`] && <span className="error">{errors[`technical_marks_${index}`]}</span>}
                   </td>
                   <td>
                     <input type="text" name="year" value={edu.year} onChange={(e) => handleEducationChange('technical', index, e)} />
@@ -301,23 +299,23 @@ const EducationTrainingDetailsForm = ({ goToPreviousForm }) => {
                   </td>
                   <td>
                     <input type="text" name="board" value={edu.board} onChange={(e) => handleEducationChange('professional', index, e)} />
-                    {errors[`professional_education_${index}`] && <span className="error">{errors[`professional_education_${index}`]}</span>}
+                    {errors[`professional_board_${index}`] && <span className="error">{errors[`professional_board_${index}`]}</span>}
                   </td>
                   <td>
                     <input type="text" name="marks" value={edu.marks} onChange={(e) => handleEducationChange('professional', index, e)} />
-                    {errors[`professional_education_${index}`] && <span className="error">{errors[`professional_education_${index}`]}</span>}
+                    {errors[`professional_marks_${index}`] && <span className="error">{errors[`professional_marks_${index}`]}</span>}
                   </td>
                   <td>
                     <input type="text" name="year" value={edu.year} onChange={(e) => handleEducationChange('professional', index, e)} />
-                    {errors[`technical_education_${index}`] && <span className="error">{errors[`technical_education_${index}`]}</span>}
+                    {errors[`technical_year_${index}`] && <span className="error">{errors[`technical_year_${index}`]}</span>}
                   </td>
                   <td>
                     <input type="text" name="stream" value={edu.stream} onChange={(e) => handleEducationChange('professional', index, e)} />
-                    {errors[`professional_education_${index}`] && <span className="error">{errors[`professional_education_${index}`]}</span>}
+                    {errors[`professional_stream_${index}`] && <span className="error">{errors[`professional_stream_${index}`]}</span>}
                   </td>
                   <td>
                     <input type="text" name="grade" value={edu.grade} onChange={(e) => handleEducationChange('professional', index, e)} />
-                    {errors[`professional_education_${index}`] && <span className="error">{errors[`professional_education_${index}`]}</span>}
+                    {errors[`professional_grade_${index}`] && <span className="error">{errors[`professional_grade_${index}`]}</span>}
                   </td>
                   <td>
                     <button type="button" className='remvingButton'  onClick={() => removeEducationRow('professional', index)}>x</button>
@@ -441,7 +439,7 @@ const EducationTrainingDetailsForm = ({ goToPreviousForm }) => {
         </div>
 
         <div className="form-actions">
-        <button type='button' onClick={goToPreviousForm} className="submit-btn" > &lt; Previous </button>
+        <button type='button' onClick={prevStep} className="submit-btn" > &lt; Previous </button>
         <button type="submit" className="submit-btn">Next &gt; </button>
         </div>
       </form>

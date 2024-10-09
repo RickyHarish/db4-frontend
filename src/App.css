@@ -251,3 +251,8 @@ button:hover {
   color: red;
   font-size: 8px;
 }
+
+.error{
+  color: red;
+  font-size: 8px;
+}

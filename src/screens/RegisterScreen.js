@@ -1,117 +1,85 @@
-// import React, { useState } from "react";
-// //import { Form, Button, Container } from "react-bootstrap";
-// import EducationTrainingDetailsForm from "../forms/EducationDetailsForm";
-// import JoiningDetailsForm from "../forms/JoiningDetailsForm";
-
-// const RegisterScreen = () => {
-
-//     // State to manage which form is currently being shown
-//     const [currentForm, setCurrentForm] = useState(1);
-
-//     // State to hold the joining details data
-//   const [joiningDetails, setJoiningDetails] = useState({
-//     dateOfJoining: '',
-//     officeName: '',
-//     initialDesignation: '',
-//     modeOfRecruitment: '',
-//     dateOfAppointment:'',
-//     employeeType:''
-//   });
-
-//   // State to hold the education and training details data
-//   const [educationDetails, setEducationDetails] = useState({});
-//   const [trainingDetails, setTrainingDetails] = useState({});
-
-//   // Function to validate joining form fields before navigating to the next form
-//   const validateJoiningDetails = () => {
-//     const { dateOfJoining, dateOfAppointment, officeName, initialDesignation, modeOfRecruitment, employeeType } = joiningDetails;
-//     return dateOfJoining && dateOfAppointment && officeName && initialDesignation && modeOfRecruitment && employeeType;
-//   };
-
-//   // Function to go to the next form (Education/Training Details)
-//   const goToNextForm = () => {
-//     if (validateJoiningDetails()) {
-//       setCurrentForm(2);  // Go to the next form (Education & Training)
-//     } else {
-//       alert('Please fill out all Joining Details before proceeding.');
-//     }
-//   };
-
-//   // Function to go back to the previous form (Joining Details)
-//   const goToPreviousForm = () => {
-//     setCurrentForm(1);  // Go back to the Joining Details form
-//   };
-
-
-//   return(
-//     <div className="register-screen">
-//        {currentForm===1 && (<JoiningDetailsForm
-//         joiningDetails={joiningDetails}
-//         setJoiningDetails={setJoiningDetails}
-//         goToNextForm={goToNextForm}
-//         /> )}
-
-//         {currentForm===2 && <EducationTrainingDetailsForm
-//         educationDetails={educationDetails}
-//         setEducationDetails={setEducationDetails}
-//         trainingDetails={trainingDetails}
-//         setTrainingDetails={setTrainingDetails}
-//         goToPreviousForm={goToPreviousForm}
-//          />}
-        
-//     </div>
-//   )
-// };
-
-// export default RegisterScreen;
-
-
 import React, { useState } from "react";
-import EducationTrainingDetailsForm from "../forms/EducationDetailsForm";
+import PersonalInformationForm from "../forms/PersonalInformationForm";
 import JoiningDetailsForm from "../forms/JoiningDetailsForm";
+import EducationDetailsForm from "../forms/EducationDetailsForm";
+import FamilyDetailsForm from "../forms/FamilyDetailsForm";
+import ServiceHistoryForm from "../forms/ServiceHistoryForm";
+import NominationDetailsForm from "../forms/NominationDetailsForm";
+import axios from "axios";
 
 const RegisterScreen = () => {
-  const [currentForm, setCurrentForm] = useState(1);
-
-  const [joiningDetails, setJoiningDetails] = useState({
-    dateOfJoining: '',
-    officeName: '',
-    initialDesignation: '',
-    modeOfRecruitment: '',
-    dateOfAppointment: '',
-    employeeType: ''
+  const [currentStep, setCurrentStep] = useState(1); // Tracks the current form page
+  const [formData, setFormData] = useState({
+    personalInfo: {},
+    addressInfo: {},
+    joiningDetails: {},
+    educationDetails: {},
+    trainingDetails:{},
+    trainingInIndia:{},
+    trainingInAbroad:{},
+    familyDetails: {},
+    serviceHistory: {},
+    nominationDetails: {},
   });
 
-  const [educationDetails, setEducationDetails] = useState({});
-  const [trainingDetails, setTrainingDetails] = useState({});
-
-  const goToNextForm = () => {
-    setCurrentForm(2);
+  // Move to next form page
+  const nextStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
   };
 
-  const goToPreviousForm = () => {
-    setCurrentForm(1);
+  // Move to previous form page
+  const prevStep = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
+  };
+
+  // Update formData with current form data
+  const handleFormDataChange = (section, data) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [section]: data, // Update the specific section data
+    }));
+  };
+
+  // Submit final data
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('/api/employees/register', formData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log(formData)
+      console.log('Data submitted:', response.data);
+      alert("Data Submitted Successfully")
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+  };
+
+  // Conditionally render the form based on current step
+  const renderForm = () => {
+    switch (currentStep) {
+      case 1:
+        return <PersonalInformationForm nextStep={nextStep} handleFormDataChange={handleFormDataChange} />;
+      // case 1:
+      //   return <AddressForm nextStep={nextStep} prevStep={prevStep} handleFormDataChange={handleFormDataChange} />;
+      case 2:
+        return <JoiningDetailsForm nextStep={nextStep} prevStep={prevStep} handleFormDataChange={handleFormDataChange} />;
+      case 3:
+        return <EducationDetailsForm nextStep={nextStep} prevStep={prevStep} handleFormDataChange={handleFormDataChange} />;
+      case 4:
+        return <FamilyDetailsForm nextStep={nextStep} prevStep={prevStep} handleFormDataChange={handleFormDataChange} />;
+      case 5:
+        return <ServiceHistoryForm nextStep={nextStep} prevStep={prevStep} handleFormDataChange={handleFormDataChange} />;
+      case 6:
+        return <NominationDetailsForm prevStep={prevStep} handleFormDataChange={handleFormDataChange} handleSubmit={handleSubmit} />;
+      default:
+        return null;
+    }
   };
 
   return (
-    <div className="register-screen">
-      {currentForm === 1 && (
-        <JoiningDetailsForm
-          joiningDetails={joiningDetails}
-          setJoiningDetails={setJoiningDetails}
-          goToNextForm={goToNextForm}
-        />
-      )}
-
-      {currentForm === 2 && (
-        <EducationTrainingDetailsForm
-          educationDetails={educationDetails}
-          setEducationDetails={setEducationDetails}
-          trainingDetails={trainingDetails}
-          setTrainingDetails={setTrainingDetails}
-          goToPreviousForm={goToPreviousForm}
-        />
-      )}
+    <div>
+      <h1>Registration Form</h1>
+      {renderForm()}
     </div>
   );
 };

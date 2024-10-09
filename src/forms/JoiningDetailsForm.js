@@ -264,9 +264,17 @@
 import React, { useState } from 'react';
 import Footer from "../components/Footer";
 
-const JoiningDetailsForm = ({ joiningDetails, setJoiningDetails, goToNextForm }) => {
+const JoiningDetailsForm = ({ nextStep, prevStep, handleFormDataChange }) => {
   // State to track errors for each field
   const [errors, setErrors] = useState({});
+  const [joiningDetails, setJoiningDetails] = useState({
+    dateOfAppointment:"",
+    officeName:"",
+    dateOfJoining:"",
+    initialDesignation:"",
+    modeOfRecruitment:"",
+    employeeType:""
+  })
 
   // Handle input change
   const handleChange = (e) => {
@@ -302,7 +310,9 @@ const JoiningDetailsForm = ({ joiningDetails, setJoiningDetails, goToNextForm })
     e.preventDefault();
     // Validate all fields before submission
     if (validateFields()) {
-      goToNextForm(); // Proceed to the next form if validation is successful
+      handleFormDataChange("joiningDetails", joiningDetails)
+      console.log("Joining details:", joiningDetails)
+      nextStep(); // Proceed to the next form if validation is successful
     }
   };
 
@@ -358,7 +368,6 @@ const JoiningDetailsForm = ({ joiningDetails, setJoiningDetails, goToNextForm })
                 onChange={handleChange}
                 placeholder={errors.initialDesignation || ""}
                 className={errors.initialDesignation ? 'error-input' : ''}
-                
               />
             </div>
             <div className="joiningFormElement">
@@ -370,7 +379,6 @@ const JoiningDetailsForm = ({ joiningDetails, setJoiningDetails, goToNextForm })
                 onChange={handleChange}
                 placeholder={errors.modeOfRecruitment || ""}
                 className={errors.modeOfRecruitment ? 'error-input' : ''}
-                
               />
             </div>
             <div className="joiningFormElement">
@@ -382,13 +390,13 @@ const JoiningDetailsForm = ({ joiningDetails, setJoiningDetails, goToNextForm })
                 onChange={handleChange}
                 placeholder={errors.employeeType || ""}
                 className={errors.employeeType ? 'error-input' : ''}
-                
               />
             </div>
           </div>
         </div>
         <div>
           <hr style={{ borderColor: "black" }} />
+          <button type="button" onClick={prevStep} className="submit-btn">Prev &lt; </button>
           <button type="submit" className="submit-btn">Next &gt; </button>
         </div>
       </form>
