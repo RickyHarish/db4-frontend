@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Footer from '../components/Footer';
 
 const FamilyDetailsForm = ({ nextStep, prevStep, handleFormDataChange }) => {
-  const [familyMembers, setFamilyMembers] = useState(
+  const [familyMembers, setFamilyMembers] = useState([
     { name: '', relation: '', dob: '', dependent: 'No', employed: 'unemployed', sameDept: 'No', empCode: '', department: '', eSalaryCode: '' },
-  );
+  ]);
   const [errors, setErrors] = useState([]);
 
   const handleInputChange = (index, event) => {
@@ -66,7 +66,7 @@ const FamilyDetailsForm = ({ nextStep, prevStep, handleFormDataChange }) => {
           </tr>
         </thead>
         <tbody>
-          {familyMembers.map((member, index) => (
+          { familyMembers.map((member, index) => (
             <tr key={index}>
               <td>
                 <input

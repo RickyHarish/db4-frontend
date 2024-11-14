@@ -1,9 +1,9 @@
 import React from 'react'
-
+import OKRsDashboard from './okrsDashboard/OKRsDashboard'
 const OKRs = () => {
   return (
     <div>
-      This is OKRs
+      <OKRsDashboard />
     </div>
   )
 }

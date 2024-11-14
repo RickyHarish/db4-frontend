@@ -1,7 +1,285 @@
+// import React, { useState } from 'react';
+// import Footer from '../components/Footer';
+
+// const PersonalInformationForm = ({nextStep, handleFormDataChange}) => {
+//   // State for Personal Info
+//   const [formData, setFormData] = useState({
+//     firstName: '',
+//     lastName: '',
+//     dob: '',
+//     gender: '',
+//     maritalStatus: '',
+//     caste: '',
+//     category: '',
+//     religion: '',
+//     bloodGroup: '',
+//     homeState: '',
+//     homeDistrict: '',
+//   });
+
+//   // State for Address Info
+//   const [addressData, setAddressData] = useState({
+//     presentAddress: '',
+//     block: '',
+//     panchayat: '',
+//     district: '',
+//     state: '',
+//     pinCode: '',
+//     phoneNumber: '',
+//     permanentAddress: '',
+//     permanentBlock: '',
+//     permanentPanchayat: '',
+//     permanentDistrict: '',
+//     permanentState: '',
+//     permanentPinCode: ''
+//   });
+
+//   // State for Image Upload
+//   const [employeeImage, setEmployeeImage] = useState(null);
+
+//   // State to manage form steps
+//   const [step, setStep] = useState(1); // 1 for personal info, 2 for address info
+
+//   // Validation state
+//   const [Formerrors, setErrors] = useState({});
+
+//   // Handle input changes for both personal and address info
+//   const handlePersonalChange = (e) => {
+//     setFormData({
+//       ...formData,
+//       [e.target.name]: e.target.value
+//     });
+//   };
+
+//   const handleAddressChange = (e) => {
+//     setAddressData({
+//       ...addressData,
+//       [e.target.name]: e.target.value
+//     });
+//   };
+
+//   // Handle image upload
+//   const handleImageChange = (e) => {
+//     setEmployeeImage(e.target.files[0]);
+//   };
+
+//   // Validate fields
+//   const validateForm = () => {
+//     let newErrors = {};
+//     if (step === 1) {
+//       // Personal info validation
+//       if (!formData.firstName) newErrors.firstName = '*required';
+//       if (!formData.lastName) newErrors.lastName = '*required';
+//       if (!formData.dob) newErrors.dob = '*required';
+//       if (!formData.gender) newErrors.gender = '*required';
+//       if (!formData.maritalStatus) newErrors.maritalStatus = '*required';
+//       if (!formData.caste) newErrors.caste = '*required';
+//       if (!formData.category) newErrors.category = '*required';
+//       if (!formData.religion) newErrors.religion = '*required';
+//       if (!formData.bloodGroup) newErrors.bloodGroup = '*required';
+//     } else if (step === 2) {
+//       // Address info validation
+//       if (!addressData.presentAddress) newErrors.presentAddress = '*required';
+//       if (!addressData.district) newErrors.district = '*required';
+//       if (!addressData.state) newErrors.state = '*required';
+//       if (!addressData.pinCode) newErrors.pinCode = '*required';
+//       if (!addressData.phoneNumber) newErrors.phoneNumber = '*required';
+//     }
+
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   // Handle form submission
+//   const handleSubmit = (e) => {
+//     e.preventDefault()
+//     if (validateForm()) {
+//       // Submit the form data
+//       console.log('Personal Info:', formData);
+//       console.log('Address Info:', addressData);
+//       if (employeeImage) {
+//         console.log('Employee Image:', employeeImage);
+//         handleFormDataChange("addressInfo", addressData)
+//         nextStep()
+//       }
+//     }
+//   };
+
+//   // Handle moving to the next or previous step
+//   const handleNext = () => {
+//     if (validateForm()) {
+//       setStep((prevStep) => prevStep + 1);
+//       handleFormDataChange("personalInfo", formData)
+//       console.log("Personal Information:", formData)
+//     }
+//   };
+
+//   const handlePrevious = () => {
+//     setStep((prevStep) => prevStep - 1);
+//   };
+
+  
+//   return (
+//     <div className="joining-container">
+//     <form onSubmit={handleSubmit} >
+//       {step === 1 && (
+//         <div className="form-section">
+//           <h2 className="form-subtitle">Employee Personal Information</h2>
+//           <div className="form-grid">
+//           <div className="joiningFormElement">
+//             <label >First Name<span className='star'>*</span>:</label>
+//             <input name="firstName" type="text" onChange={handlePersonalChange} />
+//             {Formerrors.firstName && <p className='error'>{Formerrors.firstName}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label>Last Name<span className='star'>*</span>:</label>
+//             <input name="lastName" type="text"  onChange={handlePersonalChange} />
+//             {Formerrors.lastName && <p className='error'>{Formerrors.lastName}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Date of Birth<span className='star'>*</span>:</label>
+//             <input name="dob" type="date"  onChange={handlePersonalChange} />
+//             {Formerrors.dob && <p className='error' >{Formerrors.dob}</p>}
+//           </div>
+//           <div>
+//             <label >Gender<span className='star'>*</span>:</label>
+//             <div className="joiningFormElement">
+//               <input type="radio" name="gender" value="Male" onChange={handlePersonalChange} /> Male
+//               <input type="radio" name="gender" value="Female" onChange={handlePersonalChange} /> Female
+//               <input type="radio" name="gender" value="Other" onChange={handlePersonalChange} /> Other
+//             </div>
+//             {Formerrors.gender && <p className='error'>{Formerrors.gender}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Marital Status<span className='star'>*</span>:</label>
+//             <input name="maritalStatus" type="text"  onChange={handlePersonalChange} />
+//             {Formerrors.maritalStatus && <p className='error'>{Formerrors.maritalStatus}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Caste<span className='star'>*</span>:</label>
+//             <input name="caste" type="text"  onChange={handlePersonalChange} />
+//             {Formerrors.caste && <p className='error'>{Formerrors.caste}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Category<span className='star'>*</span>:</label>
+//             <input name="category" type="text"  onChange={handlePersonalChange} />
+//             {Formerrors.category && <p className='error'>{Formerrors.category}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Religion <span className='star'>*</span>:</label>
+//             <input name="religion" type="text" onChange={handlePersonalChange} />
+//             {Formerrors.religion && <p className='error'>{Formerrors.religion}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label>Blood Group <span className='star'>*</span>:</label>
+//             <input name="bloodGroup" type="text" onChange={handlePersonalChange} />
+//             {Formerrors.bloodGroup && <p className='error'>{Formerrors.bloodGroup}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label>Home State<span className='star'>*</span>:</label>
+//             <input name="homeState" type="text" onChange={handlePersonalChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label>Home District<span className='star'>*</span>:</label>
+//             <input name="homeDistrict" type="text" onChange={handlePersonalChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Employee Image<span className='star'>*</span>:</label>
+//             <input type="file" name="employeeImage"  onChange={handleImageChange} />
+//             {employeeImage &&(
+//               <div>
+//                 <img src={URL.createObjectURL(employeeImage)} alt='' style={{ maxWidth: '150px', maxHeight: '150px' }} />
+//                 </div>
+//             )}
+//           </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {step === 2 && (
+//         <div>
+//           <h2 >Employee Address Information</h2>
+//           <div className="form-grid">
+//           <div className="joiningFormElement">
+//             <label >Present Address<span className='star'>*</span>:</label>
+//             <input name="presentAddress" type="text" onChange={handleAddressChange} />
+//             {Formerrors.presentAddress && <p className='error'>{Formerrors.presentAddress}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Block:</label>
+//             <input name="block" type="text" onChange={handleAddressChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Panchayat<span className='star'>*</span>:</label>
+//             <input name="panchayat" type="text" onChange={handleAddressChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >District<span className='star'>*</span>:</label>
+//             <input name="district" type="text"  onChange={handleAddressChange} />
+//             {Formerrors.district && <p className='error'>{Formerrors.district}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label>State<span className='star'>*</span>:</label>
+//             <input name="state" type="text"  onChange={handleAddressChange} />
+//             {Formerrors.state && <p className='error'>{Formerrors.state}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Pin Code<span className='star'>*</span>:</label>
+//             <input name="pinCode" type="text" onChange={handleAddressChange} />
+//             {Formerrors.pinCode && <p className='error'>{Formerrors.pinCode}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Phone Number<span className='star'>*</span>:</label>
+//             <input name="phoneNumber" type="text" onChange={handleAddressChange} />
+//             {Formerrors.phoneNumber && <p className='error'>{Formerrors.phoneNumber}</p>}
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Permanent Address<span className='star'>*</span>:</label>
+//             <input name="permanentAddress" type='text' onChange={handleAddressChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Permanent Block<span className='star'>*</span>:</label>
+//             <input name="permanentBlock" type="text" onChange={handleAddressChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Permanent Panchayat<span className='star'>*</span>:</label>
+//             <input name="permanentPanchayat" type="text" onChange={handleAddressChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Permanent District<span className='star'>*</span>:</label>
+//             <input name="permanentDistrict" type="text"  onChange={handleAddressChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Permanent State<span className='star'>*</span>:</label>
+//             <input name="permanentState" type="text" onChange={handleAddressChange} />
+//           </div>
+//           <div className="joiningFormElement">
+//             <label >Permanent Pin Code<span className='star'>*</span>:</label>
+//             <input name="permanentPinCode" type="text" onChange={handleAddressChange} />
+//           </div>
+//           </div>
+//         </div>
+//       )}
+
+//            <div >
+//              {step > 1 && <button type="button"  onClick={handlePrevious}>Previous</button>}
+//              {step < 2 && <button type="button"  onClick={handleNext}>Next</button>}
+//              {step === 2 && <button type="submit">Next</button>}
+//           </div>
+      
+//     </form>
+//     <Footer />
+//     </div>
+//   );
+// };
+
+// export default PersonalInformationForm
+
+
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
 
-const PersonalInformationForm = ({nextStep, handleFormDataChange}) => {
+const PersonalInformationForm = ({ nextStep, handleFormDataChange }) => {
   // State for Personal Info
   const [formData, setFormData] = useState({
     firstName: '',
@@ -68,22 +346,22 @@ const PersonalInformationForm = ({nextStep, handleFormDataChange}) => {
     let newErrors = {};
     if (step === 1) {
       // Personal info validation
-      if (!formData.firstName) newErrors.firstName = '*First name is required';
-      if (!formData.lastName) newErrors.lastName = '*Last name is required';
-      if (!formData.dob) newErrors.dob = '*Date of birth is required';
-      if (!formData.gender) newErrors.gender = '*Gender is required';
-      if (!formData.maritalStatus) newErrors.maritalStatus = '*Marital status is required';
-      if (!formData.caste) newErrors.caste = '*Caste is required';
-      if (!formData.category) newErrors.category = '*Category is required';
-      if (!formData.religion) newErrors.religion = '*Religion is required';
-      if (!formData.bloodGroup) newErrors.bloodGroup = '*Blood group is required';
+      if (!formData.firstName) newErrors.firstName = '*required';
+      if (!formData.lastName) newErrors.lastName = '*required';
+      if (!formData.dob) newErrors.dob = '*required';
+      if (!formData.gender) newErrors.gender = '*required';
+      if (!formData.maritalStatus) newErrors.maritalStatus = '*required';
+      if (!formData.caste) newErrors.caste = '*required';
+      if (!formData.category) newErrors.category = '*required';
+      if (!formData.religion) newErrors.religion = '*required';
+      if (!formData.bloodGroup) newErrors.bloodGroup = '*required';
     } else if (step === 2) {
       // Address info validation
-      if (!addressData.presentAddress) newErrors.presentAddress = '*Present address is required';
-      if (!addressData.district) newErrors.district = '*District is required';
-      if (!addressData.state) newErrors.state = '*State is required';
-      if (!addressData.pinCode) newErrors.pinCode = '*Pin code is required';
-      if (!addressData.phoneNumber) newErrors.phoneNumber = '*Phone number is required';
+      if (!addressData.presentAddress) newErrors.presentAddress = '*required';
+      if (!addressData.district) newErrors.district = '*required';
+      if (!addressData.state) newErrors.state = '*required';
+      if (!addressData.pinCode) newErrors.pinCode = '*required';
+      if (!addressData.phoneNumber) newErrors.phoneNumber = '*required';
     }
 
     setErrors(newErrors);
@@ -92,15 +370,15 @@ const PersonalInformationForm = ({nextStep, handleFormDataChange}) => {
 
   // Handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (validateForm()) {
       // Submit the form data
       console.log('Personal Info:', formData);
       console.log('Address Info:', addressData);
       if (employeeImage) {
         console.log('Employee Image:', employeeImage);
-        handleFormDataChange("addressInfo", addressData)
-        nextStep()
+        handleFormDataChange("addressInfo", addressData);
+        nextStep();
       }
     }
   };
@@ -109,8 +387,8 @@ const PersonalInformationForm = ({nextStep, handleFormDataChange}) => {
   const handleNext = () => {
     if (validateForm()) {
       setStep((prevStep) => prevStep + 1);
-      handleFormDataChange("personalInfo", formData)
-      console.log("Personal Information:", formData)
+      handleFormDataChange("personalInfo", formData);
+      console.log("Personal Information:", formData);
     }
   };
 
@@ -118,216 +396,214 @@ const PersonalInformationForm = ({nextStep, handleFormDataChange}) => {
     setStep((prevStep) => prevStep - 1);
   };
 
-  // Form styling
-  const formStyle = {
-    maxWidth: '600px',
-    margin: 'auto',
-    padding: '20px',
-    borderRadius: '8px',
-    backgroundColor: '#f9f9f9',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-    fontFamily: 'Arial, sans-serif'
-  };
-
-  const labelStyle = {
-    display: 'block',
-    marginBottom: '10px',
-    fontWeight: 'bold',
-  };
-
-  const inputStyle = {
-    width: '100%',
-    padding: '8px',
-    marginBottom: '20px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    boxSizing: 'border-box'
-  };
-
-  const sectionHeaderStyle = {
-    marginBottom: '20px',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#333'
-  };
-
-  const buttonStyle = {
-    padding: '10px 20px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    marginRight: '10px'
-  };
-  
-  const buttonContainerStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '20px'
-  };
-
-  const errorStyle = {
-    color: 'red',            // Red text to indicate error
-    fontSize: '12px',        // Font size
-    fontWeight: 'bold',      // Bold text to draw attention
-    marginTop: '5px',        // Adds some space above the error message
-    marginBottom: '10px',    // Adds space below the error message
-    backgroundColor: '#ffe6e6', // Light red background for better visibility
-    padding: '8px',          // Adds padding around the error text
-    borderRadius: '4px',     // Rounded corners for a smoother look
-    border: '1px solid red', // Red border for a more defined error box
-  };
-
   return (
-    <div >
-    <form onSubmit={handleSubmit} style={formStyle}>
-      {step === 1 && (
-        <div>
-          <h2 style={sectionHeaderStyle}>Employee Personal Information</h2>
-          <div>
-            <label style={labelStyle}>First Name:</label>
-            <input name="firstName" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.firstName && <p style={errorStyle}>{Formerrors.firstName}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Last Name:</label>
-            <input name="lastName" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.lastName && <p style={errorStyle}>{Formerrors.lastName}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Date of Birth:</label>
-            <input name="dob" type="date" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.dob && <p style={errorStyle}>{Formerrors.dob}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Gender:</label>
-            <div>
-              <input type="radio" name="gender" value="Male" onChange={handlePersonalChange} /> Male
-              <input type="radio" name="gender" value="Female" onChange={handlePersonalChange} /> Female
-              <input type="radio" name="gender" value="Other" onChange={handlePersonalChange} /> Other
-            </div>
-            {Formerrors.gender && <p style={errorStyle}>{Formerrors.gender}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Marital Status:</label>
-            <input name="maritalStatus" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.maritalStatus && <p style={errorStyle}>{Formerrors.maritalStatus}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Caste:</label>
-            <input name="caste" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.caste && <p style={errorStyle}>{Formerrors.caste}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Category:</label>
-            <input name="category" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.category && <p style={errorStyle}>{Formerrors.category}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Religion:</label>
-            <input name="religion" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.religion && <p style={errorStyle}>{Formerrors.religion}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Blood Group:</label>
-            <input name="bloodGroup" style={inputStyle} onChange={handlePersonalChange} />
-            {Formerrors.bloodGroup && <p style={errorStyle}>{Formerrors.bloodGroup}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Home State:</label>
-            <input name="homeState" style={inputStyle} onChange={handlePersonalChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Home District:</label>
-            <input name="homeDistrict" style={inputStyle} onChange={handlePersonalChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Employee Image:</label>
-            <input type="file" name="employeeImage" style={inputStyle} onChange={handleImageChange} />
-            {employeeImage &&(
-              <div>
-                <img src={URL.createObjectURL(employeeImage)} alt='' style={{ maxWidth: '150px', maxHeight: '150px' }} />
+    <div className="joining-container">
+      <form onSubmit={handleSubmit} className='personalForm' >
+        {step === 1 && (
+          <div className="form-section">
+            <h2 className="form-subtitle">Employee Personal Information</h2>
+            <div className="form-grid">
+              <div className="joiningFormElement">
+                <label>First Name<span className='star'>*</span>:</label>
+                <input
+                  name="firstName"
+                  type="text"
+                  value={formData.firstName}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.firstName ? 'error-input' : ''}
+                  placeholder={Formerrors.firstName || "Your first name"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Last Name<span className='star'>*</span>:</label>
+                <input
+                  name="lastName"
+                  type="text"
+                  value={formData.lastName}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.lastName ? 'error-input' : ''}
+                  placeholder={Formerrors.lastName || "Your last name"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Date of Birth<span className='star'>*</span>:</label>
+                <input
+                  name="dob"
+                  type="date"
+                  value={formData.dob}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.dob ? 'error-input' : ''}
+                  placeholder={Formerrors.dob || ""}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Gender<span className='star'>*</span>:</label>
+                <div className="joiningFormElement">
+                  <input type="radio" name="gender" className='radio' value="Male" onChange={handlePersonalChange} /> Male
+                  <input type="radio" name="gender" className='radio' value="Female" onChange={handlePersonalChange} /> Female
+                  <input type="radio" name="gender" className='radio' value="Other" onChange={handlePersonalChange} /> Other
                 </div>
-            )}
+              </div>
+              <div className="joiningFormElement">
+                <label>Marital Status<span className='star'>*</span>:</label>
+                <input
+                  name="maritalStatus"
+                  type="text"
+                  value={formData.maritalStatus}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.maritalStatus ? 'error-input' : ''}
+                  placeholder={Formerrors.maritalStatus || "Your marital status"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Caste<span className='star'>*</span>:</label>
+                <input
+                  name="caste"
+                  type="text"
+                  value={formData.caste}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.caste ? 'error-input' : ''}
+                  placeholder={Formerrors.caste || "Your caste"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Category<span className='star'>*</span>:</label>
+                <input
+                  name="category"
+                  type="text"
+                  value={formData.category}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.category ? 'error-input' : ''}
+                  placeholder={Formerrors.category || "Your category"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Religion<span className='star'>*</span>:</label>
+                <input
+                  name="religion"
+                  type="text"
+                  value={formData.religion}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.religion ? 'error-input' : ''}
+                  placeholder={Formerrors.religion || "Your religion"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Blood Group<span className='star'>*</span>:</label>
+                <input
+                  name="bloodGroup"
+                  type="text"
+                  value={formData.bloodGroup}
+                  onChange={handlePersonalChange}
+                  className={Formerrors.bloodGroup ? 'error-input' : ''}
+                  placeholder={Formerrors.bloodGroup || "Your blood group"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Home State:</label>
+                <input
+                  name="homeState"
+                  type="text"
+                  value={formData.homeState}
+                  onChange={handlePersonalChange}
+                  placeholder="Your home state"
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Home District:</label>
+                <input
+                  name="homeDistrict"
+                  type="text"
+                  value={formData.homeDistrict}
+                  onChange={handlePersonalChange}
+                  placeholder="Your home district"
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Employee Image:</label>
+                <input type="file" name="employeeImage" className='file-input' onChange={handleImageChange} />
+                {employeeImage && (
+                  <div>
+                    <p>Image uploaded: {employeeImage.name}</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {step === 2 && (
+        {step === 2 && (
+          <div className="form-section">
+            <h2 className="form-subtitle">Address Information</h2>
+            <div className="form-grid">
+              <div className="joiningFormElement">
+                <label>Present Address<span className='star'>*</span>:</label>
+                <input
+                  name="presentAddress"
+                  type="text"
+                  value={addressData.presentAddress}
+                  onChange={handleAddressChange}
+                  className={Formerrors.presentAddress ? 'error-input' : ''}
+                  placeholder={Formerrors.presentAddress || "Your present address"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>District<span className='star'>*</span>:</label>
+                <input
+                  name="district"
+                  type="text"
+                  value={addressData.district}
+                  onChange={handleAddressChange}
+                  className={Formerrors.district ? 'error-input' : ''}
+                  placeholder={Formerrors.district || "Your district"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>State<span className='star'>*</span>:</label>
+                <input
+                  name="state"
+                  type="text"
+                  value={addressData.state}
+                  onChange={handleAddressChange}
+                  className={Formerrors.state ? 'error-input' : ''}
+                  placeholder={Formerrors.state || "Your state"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Pin Code<span className='star'>*</span>:</label>
+                <input
+                  name="pinCode"
+                  type="text"
+                  value={addressData.pinCode}
+                  onChange={handleAddressChange}
+                  className={Formerrors.pinCode ? 'error-input' : ''}
+                  placeholder={Formerrors.pinCode || "Your pin code"}
+                />
+              </div>
+              <div className="joiningFormElement">
+                <label>Phone Number<span className='star'>*</span>:</label>
+                <input
+                  name="phoneNumber"
+                  type="text"
+                  value={addressData.phoneNumber}
+                  onChange={handleAddressChange}
+                  className={Formerrors.phoneNumber ? 'error-input' : ''}
+                  placeholder={Formerrors.phoneNumber || "Your phone number"}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div>
-          <h2 style={sectionHeaderStyle}>Employee Address Information</h2>
-          <div>
-            <label style={labelStyle}>Present Address:</label>
-            <input name="presentAddress" style={inputStyle} onChange={handleAddressChange} />
-            {Formerrors.presentAddress && <p style={errorStyle}>{Formerrors.presentAddress}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Block:</label>
-            <input name="block" style={inputStyle} onChange={handleAddressChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Panchayat:</label>
-            <input name="panchayat" style={inputStyle} onChange={handleAddressChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>District:</label>
-            <input name="district" style={inputStyle} onChange={handleAddressChange} />
-            {Formerrors.district && <p style={errorStyle}>{Formerrors.district}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>State:</label>
-            <input name="state" style={inputStyle} onChange={handleAddressChange} />
-            {Formerrors.state && <p style={errorStyle}>{Formerrors.state}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Pin Code:</label>
-            <input name="pinCode" style={inputStyle} onChange={handleAddressChange} />
-            {Formerrors.pinCode && <p style={errorStyle}>{Formerrors.pinCode}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Phone Number:</label>
-            <input name="phoneNumber" style={inputStyle} onChange={handleAddressChange} />
-            {Formerrors.phoneNumber && <p style={errorStyle}>{Formerrors.phoneNumber}</p>}
-          </div>
-          <div>
-            <label style={labelStyle}>Permanent Address:</label>
-            <input name="permanentAddress" style={inputStyle} onChange={handleAddressChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Permanent Block:</label>
-            <input name="permanentBlock" style={inputStyle} onChange={handleAddressChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Permanent Panchayat:</label>
-            <input name="permanentPanchayat" style={inputStyle} onChange={handleAddressChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Permanent District:</label>
-            <input name="permanentDistrict" style={inputStyle} onChange={handleAddressChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Permanent State:</label>
-            <input name="permanentState" style={inputStyle} onChange={handleAddressChange} />
-          </div>
-          <div>
-            <label style={labelStyle}>Permanent Pin Code:</label>
-            <input name="permanentPinCode" style={inputStyle} onChange={handleAddressChange} />
-          </div>
+          {step > 1 && <button type="button" onClick={handlePrevious}>Previous</button>}
+          {step < 2 && <button type="button" onClick={handleNext}>Next</button>}
+          {step === 2 && <button type="submit">Next</button>}
         </div>
-      )}
-
-           <div style={buttonContainerStyle}>
-             {step > 1 && <button type="button" style={buttonStyle} onClick={handlePrevious}>Previous</button>}
-             {step < 2 && <button type="button" style={buttonStyle} onClick={handleNext}>Next</button>}
-             {step === 2 && <button type="submit" style={buttonStyle}>Next</button>}
-          </div>
-      
-    </form>
-    <Footer />
+      </form>
+      <Footer />
     </div>
   );
 };
 
-export default PersonalInformationForm
+export default PersonalInformationForm;

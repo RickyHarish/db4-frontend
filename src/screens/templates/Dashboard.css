@@ -1,35 +1,30 @@
+/* Dashboard container layout */
 .dashboard-container {
     display: flex;
-    min-height: 100vh; /* Full height of the viewport */
-    background-color: #f0f0f0; /* Background color for the dashboard */
+    height: 100vh; /* Full viewport height */
+    width: 100%;
+    overflow: hidden; /* Prevents unwanted overflow */
+    background-color: #f0f0f0;
+    margin: 0;
 }
 
+/* Sidebar styling */
 .sidebar {
-    width: 250px; /* Fixed width for the sidebar */
-    background-color: #ffffff;
-    border-right: 1px solid #ddd;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.main-content {
-    flex-grow: 1; /* Fills the remaining space */
-    padding: 20px;
-    background-color: #f8f8f8; /* Background color for main content area */
-    overflow-y: auto; /* Adds vertical scroll if the content overflows */
-}
-
-
-.sidebar {
-    width: 250px;
-    background-color: #f4f4f4;
+    width: 250px; /* Fixed width */
+    background-color: #0a0a0a;
     padding: 20px;
     border-right: 1px solid #ddd;
+    overflow-y: auto; /* Enables vertical scrolling for the sidebar content */
+    flex-shrink: 0; /* Prevents sidebar from shrinking */
+    box-sizing: border-box;
+    color: #ded3d3;
 }
 
+/* Sidebar list styling */
 .sidebar ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar ul li {
@@ -38,13 +33,34 @@
     display: flex;
     align-items: center;
     font-size: 16px;
+    color: #ded3d3;
 }
 
 .sidebar ul li:hover {
-    background-color: #e0e0e0;
+    background-color: #5d5959;
 }
 
 .sidebar ul li svg {
     margin-right: 10px;
     font-size: 18px;
 }
+
+/* Main content styling */
+.main-content {
+    flex: 1; /* Occupies remaining space */
+    padding: 20px;
+    background-color: #f8f8f8;
+    overflow-y: auto; /* Enables vertical scrolling if content exceeds viewport */
+    box-sizing: border-box;
+}
+
+
+.dashboard-container.sidebar-open .sidebar {
+    width: 250px; /* Adjust as needed */
+  }
+  
+  .dashboard-container.sidebar-closed .sidebar {
+    width: 0 !important;
+    overflow: hidden;
+  }
+  
