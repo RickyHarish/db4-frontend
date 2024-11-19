@@ -26,7 +26,8 @@ import LeaveRequests from './leaveRequests/LeaveRequests';
 
 function Dashboard() {
   // State to manage the active screen
-  const [activeScreen, setActiveScreen] = useState('profile');
+  const [activeScreen, setActiveScreen] = useState('');
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState('67343940a35795672c4c79a1');
 
   const { isSidebarOpen } = useSidebar();
 
@@ -38,9 +39,9 @@ function Dashboard() {
       case 'recruitment':
         return <OKRs />;
       case 'profile':
-        return <ProfilePage />;
+        return <ProfilePage employeeId={selectedEmployeeId} />;
       case 'employee':
-        return <EmployeeListing />;
+        return <EmployeeListing onEmployeeClick={handleEmployeeClick} />;
       case "documentRequest":
         return <DocumentRequestPage />;
       case "workTypeRequest":
@@ -68,6 +69,11 @@ function Dashboard() {
       default:
         return null
     }
+  };
+
+  const handleEmployeeClick = (id) => {
+    setSelectedEmployeeId(id);
+    setActiveScreen('profile');
   };
 
   return (

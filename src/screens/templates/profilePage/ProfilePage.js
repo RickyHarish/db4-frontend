@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Card, ListGroup, Form, Button, Tab, Nav, Table, Modal } from 'react-bootstrap';
 import WorkTypeAndShift from './workTypeAndShift/WorkTypeAndShift';
@@ -16,7 +16,7 @@ import Resignation from './resignation/Resignation';
 import { updateContract, getContractsByEmployeeId, deleteContract } from '../../../services/contractServices';
 import './ProfilePage.css';
 
-const ProfilePage = () => {
+const ProfilePage = ({employeeId}) => {
   const [editMode, setEditMode] = useState(false);
   const [tabKey, setTabKey] = useState('about');
   const [subTabKey, setSubTabKey] = useState('workInfo');
@@ -38,10 +38,11 @@ const ProfilePage = () => {
     status: ''
   });
 
-  const userId = '67343940a35795672c4c79a1'; // Replace with dynamic user ID as needed
+  const userId = employeeId; // Replace with dynamic user ID as needed
 
   // Fetch user data from the backend
-  const fetchProfileData = async () => {
+
+  const fetchProfileData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`/api/profiles/profile/${userId}`);
@@ -54,13 +55,13 @@ const ProfilePage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
-  const fetchContracts = async () => {
+  const fetchContracts = useCallback(async () => {
     const data = await getContractsByEmployeeId(userId);
     setContracts(data);
     console.log(data)
-  };
+  }, [userId]);
 
   const handleDelete = async (contractId) => {
     if (window.confirm('Are you sure you want to delete this contract?')) {
@@ -132,7 +133,7 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchProfileData();
     fetchContracts()
-  }, []);
+  }, [fetchProfileData, fetchContracts]);
 
   if (loading) {
     return <div>Loading...</div>;
