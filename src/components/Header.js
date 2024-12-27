@@ -1,125 +1,3 @@
-// import React, { useState, useEffect, useRef } from 'react';
-// import { Container, Navbar, Nav, NavDropdown, Image } from 'react-bootstrap';
-// import { LinkContainer } from 'react-router-bootstrap';
-// import { useNavigate } from 'react-router-dom';
-// import 'bootstrap-icons/font/bootstrap-icons.css'; // Ensure you have Bootstrap Icons loaded
-
-// const Header = () => {
-//   const [showProfileMenu, setShowProfileMenu] = useState(false);
-//   const profileMenuRef = useRef(null);
-//   const navigate = useNavigate()
-//   const token = localStorage.getItem('token')
-
-//   // Toggle profile dropdown on icon click
-//   const handleProfileToggle = () => {
-//     setShowProfileMenu(prev => !prev);
-//   };
-
-//   // Close dropdown if clicked outside of it
-//   const handleClickOutside = (e) => {
-//     if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
-//       setShowProfileMenu(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     // Add event listener to detect clicks outside the dropdown
-//     document.addEventListener('mousedown', handleClickOutside);
-
-//     return () => {
-//       // Cleanup the event listener on component unmount
-//       document.removeEventListener('mousedown', handleClickOutside);
-//     };
-//   }, []);
-
-//   const handleLogout=()=>{
-//     try{
-//     localStorage.removeItem('token')
-//       navigate('/')
-//   } catch(e){
-//     console.log(e)
-//   }
-//   }
-
-//   return (
-//     <header >
-//       <Navbar style={{ backgroundColor: 'cadetblue' }} expand="lg" variant="dark" collapseOnSelect>
-//         <Container>
-//           <LinkContainer to="/">
-//             <Navbar.Brand className="title" style={{ marginRight: '10px', fontSize: '1.5rem' }}>
-//               DB4Cloud
-//             </Navbar.Brand>
-//           </LinkContainer>
-//           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-//           <Navbar.Collapse id="basic-navbar-nav">
-//             <Nav className="ms-auto">
-//               <LinkContainer to="/home">
-//                 <Nav.Link>Home</Nav.Link>
-//               </LinkContainer>
-//               <LinkContainer to="/hr">
-//                 <Nav.Link>HR</Nav.Link>
-//               </LinkContainer>
-//               {!token && 
-//               <LinkContainer to="/login">
-//               <Nav.Link>Login</Nav.Link>
-//             </LinkContainer>
-//               }
-              
-
-//               {/* Profile Dropdown */}
-//               <NavDropdown 
-//                 title={<i className="bi bi-person-circle" style={{ fontSize: '1.3rem', color: 'red'  }}></i>} 
-//                 id="profile-dropdown"
-//                 show={showProfileMenu} 
-//                 onClick={handleProfileToggle} // Toggle dropdown on hover
-//                 onMouseLeave={handleProfileToggle} // Close dropdown when leaving
-//                 ref={profileMenuRef} 
-//               >
-//                 <div className='down' style={{height:""}}>
-//                 <div className="dropdown-header" style={{ display: 'flex', alignItems: 'center' }}>
-//                   <Image
-//                     src="https://via.placeholder.com/30"
-//                     roundedCircle
-//                     alt="Profile"
-                    
-//                   />
-//                   <strong>Username</strong>
-//                 </div>
-//                 <LinkContainer to="/profile">
-//                   <NavDropdown.Item>View Profile</NavDropdown.Item>
-//                 </LinkContainer>
-//                 <LinkContainer to="/inbox">
-//                   <NavDropdown.Item>Inbox</NavDropdown.Item>
-//                 </LinkContainer>
-//                 <LinkContainer to="/notifications">
-//                   <NavDropdown.Item>Notifications</NavDropdown.Item>
-//                 </LinkContainer>
-//                 <LinkContainer to="/myworkday">
-//                   <NavDropdown.Item>My Workday 2.0</NavDropdown.Item>
-//                 </LinkContainer>
-//                 <LinkContainer to="/favorites">
-//                   <NavDropdown.Item>Favorites</NavDropdown.Item>
-//                 </LinkContainer>
-//                 <NavDropdown.Divider />
-//                 <div onClick={handleLogout} style={{ borderRadius:"5px", cursor: 'pointer', padding: '10px',  textAlign:"center"}}>
-//                   Sign Out
-//                 </div>
-//                 </div>
-//               </NavDropdown>
-//             </Nav>
-//           </Navbar.Collapse>
-//         </Container>
-//       </Navbar>
-//     </header>
-//   );
-// };
-
-
-// export default Header;
-
-
-// src/components/Header.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Navbar, Nav, NavDropdown, Image, Badge, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -218,18 +96,26 @@ const Header = () => {
             <Navbar.Brand className="brand">DB4Cloud</Navbar.Brand>
           </LinkContainer>
 
+
           {/* Path Indicator */}
           <div className="path-indicator">
             {getPathIndicator()}
           </div>
 
+            
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto align-items-center">
               {/* Time Box */}
+              <LinkContainer to="/home">
+            <Navbar.Brand className="brand"> &lt; &gt;</Navbar.Brand>
+          </LinkContainer>
               <div className="time-box">
                 <span className="time-display">{formatTime(currentTime)}</span>
               </div>
+
+              
 
               {/* Settings Icon */}
               <Nav.Link className="icon-link" onClick={() => navigate('/settings')}>
